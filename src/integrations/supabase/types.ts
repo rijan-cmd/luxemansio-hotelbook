@@ -14,16 +14,232 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      contact_info: {
+        Row: {
+          address: string
+          email: string
+          id: string
+          map_embed_url: string
+          phone: string
+          updated_at: string
+        }
+        Insert: {
+          address?: string
+          email?: string
+          id?: string
+          map_embed_url?: string
+          phone?: string
+          updated_at?: string
+        }
+        Update: {
+          address?: string
+          email?: string
+          id?: string
+          map_embed_url?: string
+          phone?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      destinations: {
+        Row: {
+          blurb: string
+          country: string
+          created_at: string
+          id: string
+          image: string | null
+          name: string
+          published: boolean
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          blurb?: string
+          country?: string
+          created_at?: string
+          id?: string
+          image?: string | null
+          name: string
+          published?: boolean
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          blurb?: string
+          country?: string
+          created_at?: string
+          id?: string
+          image?: string | null
+          name?: string
+          published?: boolean
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      hotels: {
+        Row: {
+          amenities: string[]
+          breakfast: boolean
+          cancellation: string
+          check_in: string
+          check_out: string
+          city: string
+          created_at: string
+          description: string
+          destination: string
+          facilities: string[]
+          featured: boolean
+          gallery: string[]
+          id: string
+          location: string
+          main_image: string | null
+          name: string
+          parking: boolean
+          price_deluxe: number
+          price_normal: number
+          price_suite: number
+          published: boolean
+          rating: number
+          reviews: number
+          short_description: string
+          stars: number
+          tags: string[]
+          updated_at: string
+          view_label: string
+        }
+        Insert: {
+          amenities?: string[]
+          breakfast?: boolean
+          cancellation?: string
+          check_in?: string
+          check_out?: string
+          city?: string
+          created_at?: string
+          description?: string
+          destination?: string
+          facilities?: string[]
+          featured?: boolean
+          gallery?: string[]
+          id?: string
+          location?: string
+          main_image?: string | null
+          name: string
+          parking?: boolean
+          price_deluxe?: number
+          price_normal?: number
+          price_suite?: number
+          published?: boolean
+          rating?: number
+          reviews?: number
+          short_description?: string
+          stars?: number
+          tags?: string[]
+          updated_at?: string
+          view_label?: string
+        }
+        Update: {
+          amenities?: string[]
+          breakfast?: boolean
+          cancellation?: string
+          check_in?: string
+          check_out?: string
+          city?: string
+          created_at?: string
+          description?: string
+          destination?: string
+          facilities?: string[]
+          featured?: boolean
+          gallery?: string[]
+          id?: string
+          location?: string
+          main_image?: string | null
+          name?: string
+          parking?: boolean
+          price_deluxe?: number
+          price_normal?: number
+          price_suite?: number
+          published?: boolean
+          rating?: number
+          reviews?: number
+          short_description?: string
+          stars?: number
+          tags?: string[]
+          updated_at?: string
+          view_label?: string
+        }
+        Relationships: []
+      }
+      team_members: {
+        Row: {
+          description: string
+          id: string
+          name: string
+          photo_url: string | null
+          sort_order: number
+          storage_path: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          description?: string
+          id: string
+          name: string
+          photo_url?: string | null
+          sort_order?: number
+          storage_path?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Update: {
+          description?: string
+          id?: string
+          name?: string
+          photo_url?: string | null
+          sort_order?: number
+          storage_path?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      claim_first_admin: { Args: never; Returns: boolean }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +366,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+    },
   },
 } as const
