@@ -1,93 +1,36 @@
-import { useEffect, useState } from "react";
-import { Briefcase, Megaphone, Rocket, Target } from "lucide-react";
-import { fetchTeamPhotos, teamPhotoUrl } from "@/lib/team-photos";
+import { Briefcase, Megaphone, Rocket, Target, type LucideIcon } from "lucide-react";
+import { imageUrl, useTeamMembers, type TeamMemberRow } from "@/lib/cms";
 
 /**
  * MEET OUR TEAM
  * -------------
- * Photos are managed by an administrator from the Admin Panel (/admin) and are
+ * Team members are managed by an administrator from the Admin Dashboard and
  * stored in the Luxemansio backend, so a change is visible to every visitor.
- * Visitors can only view these photos.
+ * Visitors can only view this section.
  */
-export type TeamMember = {
-  id: string;
-  name: string;
-  title: string;
-  description: string;
-  icon: typeof Rocket;
-  initials: string;
-  photo: string | null;
-};
+const ICONS: LucideIcon[] = [Rocket, Briefcase, Megaphone, Target];
 
-export const teamMembers: TeamMember[] = [
-  {
-    id: "rijan",
-    name: "Rijan Manandhar",
-    title: "Co-Founder, CEO & CTO",
-    description:
-      "Leads the overall vision and development of Luxemansio, overseeing product strategy, technology, website development, and user experience.",
-    icon: Rocket,
-    initials: "RM",
-    photo: null,
-  },
-  {
-    id: "samir",
-    name: "Samir Khatri",
-    title: "Co-Founder & CBO",
-    description:
-      "Leads business development and commercial strategy, focusing on the business model, revenue strategy, brand development, and growth.",
-    icon: Briefcase,
-    initials: "SK",
-    photo: null,
-  },
-  {
-    id: "jenish",
-    name: "Jenish Basnet",
-    title: "Co-Founder & CMO",
-    description:
-      "Leads marketing and brand growth, managing social media, digital content, photography, videography, and promotional activities.",
-    icon: Megaphone,
-    initials: "JB",
-    photo: null,
-  },
-  {
-    id: "ujan",
-    name: "Ujan Dhoj Malla",
-    title: "Co-Founder & CSO",
-    description:
-      "Leads strategic planning and market analysis, focusing on customer demographics, market positioning, and competitive analysis.",
-    icon: Target,
-    initials: "UD",
-    photo: null,
-  },
-];
+export function initialsOf(name: string) {
+  return name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((w) => w[0]!.toUpperCase())
+    .join("");
+}
 
-export function useTeamPhotos() {
-  const [versions, setVersions] = useState<Record<string, string>>({});
-
-  useEffect(() => {
-    let active = true;
-    fetchTeamPhotos().then((v) => {
-      if (active) setVersions(v);
-    });
-    return () => {
-      active = false;
-    };
-  }, []);
-
-  return versions;
+export function teamPhotoSrc(member: Pick<TeamMemberRow, "photo_url" | "storage_path">) {
+  return imageUrl(member.storage_path) ?? member.photo_url ?? null;
 }
 
 export function TeamAvatar({
   member,
-  version,
   className = "h-28 w-28",
 }: {
-  member: TeamMember;
-  version?: string;
+  member: Pick<TeamMemberRow, "name" | "title" | "photo_url" | "storage_path">;
   className?: string;
 }) {
-  const src = version ? teamPhotoUrl(member.id, version) : member.photo;
+  const src = teamPhotoSrc(member);
 
   if (src) {
     return (
@@ -104,30 +47,29 @@ export function TeamAvatar({
     <div
       className={`${className} grid place-items-center rounded-full bg-navy font-display text-2xl tracking-wide text-gold ring-2 ring-gold/30 transition-transform duration-500 group-hover:scale-105`}
     >
-      {member.initials}
+      {initialsOf(member.name)}
     </div>
   );
 }
 
-function MemberCard({ member, version }: { member: TeamMember; version?: string }) {
+function MemberCard({ member, index }: { member: TeamMemberRow; index: number }) {
+  const Icon = ICONS[index % ICONS.length]!;
   return (
     <article className="group flex flex-col items-center rounded-2xl bg-card p-6 text-center ring-1 ring-border/60 transition-all hover:shadow-xl hover:-translate-y-0.5">
-      <TeamAvatar member={member} version={version} />
+      <TeamAvatar member={member} />
 
       <h3 className="mt-5 font-display text-xl text-navy">{member.name}</h3>
       <p className="mt-1 flex items-center justify-center gap-1.5 text-xs font-medium uppercase tracking-wide text-gold">
-        <member.icon className="h-3.5 w-3.5" />
+        <Icon className="h-3.5 w-3.5" />
         {member.title}
       </p>
-      <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-        {member.description}
-      </p>
+      <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{member.description}</p>
     </article>
   );
 }
 
 export function TeamSection({ heading = "Meet Our Team" }: { heading?: string }) {
-  const versions = useTeamPhotos();
+  const { data: members = [] } = useTeamMembers();
 
   return (
     <section className="container-page mt-20 md:mt-28">
@@ -140,8 +82,8 @@ export function TeamSection({ heading = "Meet Our Team" }: { heading?: string })
       </div>
 
       <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {teamMembers.map((m) => (
-          <MemberCard key={m.id} member={m} version={versions[m.id]} />
+        {members.map((m, i) => (
+          <MemberCard key={m.id} member={m} index={i} />
         ))}
       </div>
     </section>
