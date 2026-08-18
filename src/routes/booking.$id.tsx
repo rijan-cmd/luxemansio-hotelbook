@@ -40,6 +40,22 @@ export const Route = createFileRoute("/booking/$id")({
 function BookingPage() {
   const { id } = Route.useParams();
   const { data: hotel, isLoading } = useHotel(id);
+
+  if (isLoading) {
+    return <div className="container-page py-24 text-center text-sm text-muted-foreground">Loading…</div>;
+  }
+  if (!hotel) {
+    return (
+      <div className="container-page py-24 text-center">
+        <p className="font-display text-2xl text-navy">Hotel not found</p>
+        <Link to="/hotels" className="mt-4 inline-block text-sm text-gold">Browse all hotels</Link>
+      </div>
+    );
+  }
+  return <BookingForm hotel={hotel} />;
+}
+
+function BookingForm({ hotel }: { hotel: import("@/lib/hotels").Hotel }) {
   const search = Route.useSearch();
   const navigate = useNavigate();
 
