@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import { useContactInfo } from "@/lib/cms";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -20,6 +21,7 @@ export const Route = createFileRoute("/contact")({
 });
 
 function Contact() {
+  const { data: info } = useContactInfo();
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -61,13 +63,16 @@ function Contact() {
         </form>
 
         <aside className="space-y-4">
-          <InfoCard icon={<Mail />} title="Email" text="concierge@luxemansio.com" />
-          <InfoCard icon={<Phone />} title="Phone" text="+1 (800) 555-0110 · 24/7" />
-          <InfoCard icon={<MapPin />} title="Headquarters" text="12 Rue Royale, 75008 Paris, France" />
+          <InfoCard icon={<Mail />} title="Email" text={info?.email ?? "concierge@luxemansio.com"} />
+          <InfoCard icon={<Phone />} title="Phone" text={info?.phone ?? "+977 1 4000 000 · 24/7"} />
+          <InfoCard icon={<MapPin />} title="Headquarters" text={info?.address ?? "Kathmandu, Nepal"} />
           <div className="overflow-hidden rounded-2xl ring-1 ring-border">
             <iframe
               title="Map"
-              src="https://www.openstreetmap.org/export/embed.html?bbox=2.320%2C48.867%2C2.328%2C48.872&layer=mapnik"
+              src={
+                info?.map_embed_url ||
+                "https://www.openstreetmap.org/export/embed.html?bbox=85.30%2C27.69%2C85.34%2C27.72&layer=mapnik"
+              }
               className="h-56 w-full border-0"
             />
           </div>
