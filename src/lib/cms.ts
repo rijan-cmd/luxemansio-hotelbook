@@ -13,7 +13,9 @@ export const IMAGE_BUCKET = "site-images";
 
 /** Public URL for an image stored in the private admin bucket. */
 export function imageUrl(path?: string | null) {
-  return path ? `/api/public/image/${path}` : null;
+  if (!path) return null;
+  if (/^https?:\/\//.test(path)) return path;
+  return `/api/public/image/${path}`;
 }
 
 /* ── row types ─────────────────────────────────────────────── */

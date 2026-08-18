@@ -13,6 +13,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { TeamAvatar } from "@/components/site/team-section";
 import { GalleryField, ImageField } from "@/components/admin/image-field";
 import {
+  imageUrl,
   isCurrentUserAdmin,
   useContactInfo,
   useDestinations,
@@ -274,7 +275,7 @@ function HotelsManager() {
           >
             <div className="h-16 w-24 overflow-hidden rounded-lg bg-muted">
               {h.main_image && (
-                <img src={`/api/public/image/${h.main_image}`} alt={h.name} className="h-full w-full object-cover" />
+                <img src={imageUrl(h.main_image) ?? ""} alt={h.name} className="h-full w-full object-cover" />
               )}
             </div>
             <div className="min-w-48 flex-1">
