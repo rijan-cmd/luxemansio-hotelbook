@@ -1,4 +1,4 @@
-import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { Calendar, Users, CreditCard, Lock, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -6,7 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { getHotel, formatNPR } from "@/lib/hotels";
+import { formatNPR } from "@/lib/hotels";
+import { useHotel } from "@/lib/cms";
 import { saveBooking, generateRef, getUser } from "@/lib/booking-store";
 import { toast } from "sonner";
 
@@ -19,11 +20,6 @@ interface Search {
 }
 
 export const Route = createFileRoute("/booking/$id")({
-  loader: ({ params }) => {
-    const hotel = getHotel(params.id);
-    if (!hotel) throw notFound();
-    return { hotel };
-  },
   validateSearch: (s: Record<string, unknown>): Search => ({
     room: typeof s.room === "string" ? s.room : undefined,
     checkIn: typeof s.checkIn === "string" ? s.checkIn : undefined,
@@ -31,20 +27,19 @@ export const Route = createFileRoute("/booking/$id")({
     guests: typeof s.guests === "number" ? s.guests : undefined,
     rooms: typeof s.rooms === "number" ? s.rooms : undefined,
   }),
-  head: ({ loaderData }) => ({
-    meta: loaderData
-      ? [
-          { title: `Book ${loaderData.hotel.name} — Luxemansio` },
-          { name: "description", content: `Complete your reservation at ${loaderData.hotel.name}.` },
-          { name: "robots", content: "noindex" },
-        ]
-      : [{ title: "Booking — Luxemansio" }, { name: "robots", content: "noindex" }],
+  head: () => ({
+    meta: [
+      { title: "Complete your booking — Luxemansio" },
+      { name: "description", content: "Complete your Luxemansio reservation." },
+      { name: "robots", content: "noindex" },
+    ],
   }),
   component: BookingPage,
 });
 
 function BookingPage() {
-  const { hotel } = Route.useLoaderData() as { hotel: import("@/lib/hotels").Hotel };
+  const { id } = Route.useParams();
+  const { data: hotel, isLoading } = useHotel(id);
   const search = Route.useSearch();
   const navigate = useNavigate();
 

@@ -1,34 +1,40 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { MapPin, Star, Users, BedDouble, Clock, Check, CreditCard, Baby, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { getHotel, formatNPR, startingPrice } from "@/lib/hotels";
+import { formatNPR, startingPrice } from "@/lib/hotels";
+import { useHotel } from "@/lib/cms";
 
 export const Route = createFileRoute("/hotels/$id")({
-  loader: ({ params }) => {
-    const hotel = getHotel(params.id);
-    if (!hotel) throw notFound();
-    return { hotel };
-  },
-  head: ({ loaderData }) => ({
-    meta: loaderData
-      ? [
-          { title: `${loaderData.hotel.name} — Luxemansio` },
-          { name: "description", content: loaderData.hotel.shortDescription },
-          { property: "og:title", content: `${loaderData.hotel.name} — Luxemansio` },
-          { property: "og:description", content: loaderData.hotel.shortDescription },
-          { property: "og:image", content: loaderData.hotel.images.main },
-          { name: "twitter:image", content: loaderData.hotel.images.main },
-        ]
-      : [{ title: "Hotel not found — Luxemansio" }, { name: "robots", content: "noindex" }],
+  head: () => ({
+    meta: [
+      { title: "Hotel — Luxemansio" },
+      { name: "description", content: "View photos, rooms, amenities and prices for this Luxemansio hotel." },
+      { property: "og:title", content: "Hotel — Luxemansio" },
+      { property: "og:description", content: "View photos, rooms, amenities and prices for this Luxemansio hotel." },
+    ],
   }),
   component: HotelDetails,
 });
 
 function HotelDetails() {
-  const { hotel } = Route.useLoaderData() as { hotel: import("@/lib/hotels").Hotel };
+  const { id } = Route.useParams();
+  const { data: hotel, isLoading } = useHotel(id);
   const [active, setActive] = useState(0);
+
+  if (isLoading) {
+    return <div className="container-page py-24 text-center text-sm text-muted-foreground">Loading hotel…</div>;
+  }
+
+  if (!hotel) {
+    return (
+      <div className="container-page py-24 text-center">
+        <p className="font-display text-2xl text-navy">Hotel not found</p>
+        <Link to="/hotels" className="mt-4 inline-block text-sm text-gold">Browse all hotels</Link>
+      </div>
+    );
+  }
 
   return (
     <>
