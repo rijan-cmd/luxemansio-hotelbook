@@ -10,33 +10,252 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as AccountRouteImport } from './routes/account'
+import { Route as ConfirmationRouteImport } from './routes/confirmation'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as DestinationsRouteImport } from './routes/destinations'
+import { Route as FaqRouteImport } from './routes/faq'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as OffersRouteImport } from './routes/offers'
+import { Route as RegisterRouteImport } from './routes/register'
+import { Route as TeamRouteImport } from './routes/team'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as BookingIdRouteImport } from './routes/booking.$id'
+import { Route as HotelsIndexRouteImport } from './routes/hotels.index'
+import { Route as HotelsIdRouteImport } from './routes/hotels.$id'
+import { Route as ApiPublicImageSplatRouteImport } from './routes/api/public/image.$'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccountRoute = AccountRouteImport.update({
+  id: '/account',
+  path: '/account',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConfirmationRoute = ConfirmationRouteImport.update({
+  id: '/confirmation',
+  path: '/confirmation',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DestinationsRoute = DestinationsRouteImport.update({
+  id: '/destinations',
+  path: '/destinations',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OffersRoute = OffersRouteImport.update({
+  id: '/offers',
+  path: '/offers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TeamRoute = TeamRouteImport.update({
+  id: '/team',
+  path: '/team',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/admin/login',
+  path: '/admin/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BookingIdRoute = BookingIdRouteImport.update({
+  id: '/booking/$id',
+  path: '/booking/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HotelsIndexRoute = HotelsIndexRouteImport.update({
+  id: '/hotels/',
+  path: '/hotels/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HotelsIdRoute = HotelsIdRouteImport.update({
+  id: '/hotels/$id',
+  path: '/hotels/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicImageSplatRoute = ApiPublicImageSplatRouteImport.update({
+  id: '/api/public/image/$',
+  path: '/api/public/image/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/account': typeof AccountRoute
+  '/confirmation': typeof ConfirmationRoute
+  '/contact': typeof ContactRoute
+  '/destinations': typeof DestinationsRoute
+  '/faq': typeof FaqRoute
+  '/login': typeof LoginRoute
+  '/offers': typeof OffersRoute
+  '/register': typeof RegisterRoute
+  '/team': typeof TeamRoute
+  '/admin': typeof AuthenticatedAdminRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/booking/$id': typeof BookingIdRoute
+  '/hotels/$id': typeof HotelsIdRoute
+  '/hotels/': typeof HotelsIndexRoute
+  '/api/public/image/$': typeof ApiPublicImageSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/account': typeof AccountRoute
+  '/confirmation': typeof ConfirmationRoute
+  '/contact': typeof ContactRoute
+  '/destinations': typeof DestinationsRoute
+  '/faq': typeof FaqRoute
+  '/login': typeof LoginRoute
+  '/offers': typeof OffersRoute
+  '/register': typeof RegisterRoute
+  '/team': typeof TeamRoute
+  '/admin': typeof AuthenticatedAdminRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/booking/$id': typeof BookingIdRoute
+  '/hotels/$id': typeof HotelsIdRoute
+  '/hotels': typeof HotelsIndexRoute
+  '/api/public/image/$': typeof ApiPublicImageSplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/about': typeof AboutRoute
+  '/account': typeof AccountRoute
+  '/confirmation': typeof ConfirmationRoute
+  '/contact': typeof ContactRoute
+  '/destinations': typeof DestinationsRoute
+  '/faq': typeof FaqRoute
+  '/login': typeof LoginRoute
+  '/offers': typeof OffersRoute
+  '/register': typeof RegisterRoute
+  '/team': typeof TeamRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/booking/$id': typeof BookingIdRoute
+  '/hotels/$id': typeof HotelsIdRoute
+  '/hotels/': typeof HotelsIndexRoute
+  '/api/public/image/$': typeof ApiPublicImageSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/account'
+    | '/confirmation'
+    | '/contact'
+    | '/destinations'
+    | '/faq'
+    | '/login'
+    | '/offers'
+    | '/register'
+    | '/team'
+    | '/admin'
+    | '/admin/login'
+    | '/booking/$id'
+    | '/hotels/$id'
+    | '/hotels/'
+    | '/api/public/image/$'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/about'
+    | '/account'
+    | '/confirmation'
+    | '/contact'
+    | '/destinations'
+    | '/faq'
+    | '/login'
+    | '/offers'
+    | '/register'
+    | '/team'
+    | '/admin'
+    | '/admin/login'
+    | '/booking/$id'
+    | '/hotels/$id'
+    | '/hotels'
+    | '/api/public/image/$'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/about'
+    | '/account'
+    | '/confirmation'
+    | '/contact'
+    | '/destinations'
+    | '/faq'
+    | '/login'
+    | '/offers'
+    | '/register'
+    | '/team'
+    | '/_authenticated/admin'
+    | '/admin/login'
+    | '/booking/$id'
+    | '/hotels/$id'
+    | '/hotels/'
+    | '/api/public/image/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AboutRoute: typeof AboutRoute
+  AccountRoute: typeof AccountRoute
+  ConfirmationRoute: typeof ConfirmationRoute
+  ContactRoute: typeof ContactRoute
+  DestinationsRoute: typeof DestinationsRoute
+  FaqRoute: typeof FaqRoute
+  LoginRoute: typeof LoginRoute
+  OffersRoute: typeof OffersRoute
+  RegisterRoute: typeof RegisterRoute
+  TeamRoute: typeof TeamRoute
+  AdminLoginRoute: typeof AdminLoginRoute
+  BookingIdRoute: typeof BookingIdRoute
+  HotelsIdRoute: typeof HotelsIdRoute
+  HotelsIndexRoute: typeof HotelsIndexRoute
+  ApiPublicImageSplatRoute: typeof ApiPublicImageSplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +267,157 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/account': {
+      id: '/account'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof AccountRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/confirmation': {
+      id: '/confirmation'
+      path: '/confirmation'
+      fullPath: '/confirmation'
+      preLoaderRoute: typeof ConfirmationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/destinations': {
+      id: '/destinations'
+      path: '/destinations'
+      fullPath: '/destinations'
+      preLoaderRoute: typeof DestinationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/offers': {
+      id: '/offers'
+      path: '/offers'
+      fullPath: '/offers'
+      preLoaderRoute: typeof OffersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/team': {
+      id: '/team'
+      path: '/team'
+      fullPath: '/team'
+      preLoaderRoute: typeof TeamRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/admin/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/booking/$id': {
+      id: '/booking/$id'
+      path: '/booking/$id'
+      fullPath: '/booking/$id'
+      preLoaderRoute: typeof BookingIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hotels/': {
+      id: '/hotels/'
+      path: '/hotels'
+      fullPath: '/hotels/'
+      preLoaderRoute: typeof HotelsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hotels/$id': {
+      id: '/hotels/$id'
+      path: '/hotels/$id'
+      fullPath: '/hotels/$id'
+      preLoaderRoute: typeof HotelsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/image/$': {
+      id: '/api/public/image/$'
+      path: '/api/public/image/$'
+      fullPath: '/api/public/image/$'
+      preLoaderRoute: typeof ApiPublicImageSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AboutRoute: AboutRoute,
+  AccountRoute: AccountRoute,
+  ConfirmationRoute: ConfirmationRoute,
+  ContactRoute: ContactRoute,
+  DestinationsRoute: DestinationsRoute,
+  FaqRoute: FaqRoute,
+  LoginRoute: LoginRoute,
+  OffersRoute: OffersRoute,
+  RegisterRoute: RegisterRoute,
+  TeamRoute: TeamRoute,
+  AdminLoginRoute: AdminLoginRoute,
+  BookingIdRoute: BookingIdRoute,
+  HotelsIdRoute: HotelsIdRoute,
+  HotelsIndexRoute: HotelsIndexRoute,
+  ApiPublicImageSplatRoute: ApiPublicImageSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
