@@ -26,6 +26,7 @@ import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as BookingIdRouteImport } from './routes/booking.$id'
 import { Route as HotelsIndexRouteImport } from './routes/hotels.index'
 import { Route as HotelsIdRouteImport } from './routes/hotels.$id'
+import { Route as ApiPublicImageSplatRouteImport } from './routes/api/public/image.$'
 import { Route as ApiPublicTeamPhotoMemberIdRouteImport } from './routes/api/public/team-photo.$memberId'
 
 const IndexRoute = IndexRouteImport.update({
@@ -112,6 +113,11 @@ const HotelsIdRoute = HotelsIdRouteImport.update({
   path: '/hotels/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicImageSplatRoute = ApiPublicImageSplatRouteImport.update({
+  id: '/api/public/image/$',
+  path: '/api/public/image/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicTeamPhotoMemberIdRoute =
   ApiPublicTeamPhotoMemberIdRouteImport.update({
     id: '/api/public/team-photo/$memberId',
@@ -136,6 +142,7 @@ export interface FileRoutesByFullPath {
   '/booking/$id': typeof BookingIdRoute
   '/hotels/$id': typeof HotelsIdRoute
   '/hotels/': typeof HotelsIndexRoute
+  '/api/public/image/$': typeof ApiPublicImageSplatRoute
   '/api/public/team-photo/$memberId': typeof ApiPublicTeamPhotoMemberIdRoute
 }
 export interface FileRoutesByTo {
@@ -155,6 +162,7 @@ export interface FileRoutesByTo {
   '/booking/$id': typeof BookingIdRoute
   '/hotels/$id': typeof HotelsIdRoute
   '/hotels': typeof HotelsIndexRoute
+  '/api/public/image/$': typeof ApiPublicImageSplatRoute
   '/api/public/team-photo/$memberId': typeof ApiPublicTeamPhotoMemberIdRoute
 }
 export interface FileRoutesById {
@@ -176,6 +184,7 @@ export interface FileRoutesById {
   '/booking/$id': typeof BookingIdRoute
   '/hotels/$id': typeof HotelsIdRoute
   '/hotels/': typeof HotelsIndexRoute
+  '/api/public/image/$': typeof ApiPublicImageSplatRoute
   '/api/public/team-photo/$memberId': typeof ApiPublicTeamPhotoMemberIdRoute
 }
 export interface FileRouteTypes {
@@ -197,6 +206,7 @@ export interface FileRouteTypes {
     | '/booking/$id'
     | '/hotels/$id'
     | '/hotels/'
+    | '/api/public/image/$'
     | '/api/public/team-photo/$memberId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -216,6 +226,7 @@ export interface FileRouteTypes {
     | '/booking/$id'
     | '/hotels/$id'
     | '/hotels'
+    | '/api/public/image/$'
     | '/api/public/team-photo/$memberId'
   id:
     | '__root__'
@@ -236,6 +247,7 @@ export interface FileRouteTypes {
     | '/booking/$id'
     | '/hotels/$id'
     | '/hotels/'
+    | '/api/public/image/$'
     | '/api/public/team-photo/$memberId'
   fileRoutesById: FileRoutesById
 }
@@ -256,6 +268,7 @@ export interface RootRouteChildren {
   BookingIdRoute: typeof BookingIdRoute
   HotelsIdRoute: typeof HotelsIdRoute
   HotelsIndexRoute: typeof HotelsIndexRoute
+  ApiPublicImageSplatRoute: typeof ApiPublicImageSplatRoute
   ApiPublicTeamPhotoMemberIdRoute: typeof ApiPublicTeamPhotoMemberIdRoute
 }
 
@@ -380,6 +393,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HotelsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/image/$': {
+      id: '/api/public/image/$'
+      path: '/api/public/image/$'
+      fullPath: '/api/public/image/$'
+      preLoaderRoute: typeof ApiPublicImageSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/team-photo/$memberId': {
       id: '/api/public/team-photo/$memberId'
       path: '/api/public/team-photo/$memberId'
@@ -418,6 +438,7 @@ const rootRouteChildren: RootRouteChildren = {
   BookingIdRoute: BookingIdRoute,
   HotelsIdRoute: HotelsIdRoute,
   HotelsIndexRoute: HotelsIndexRoute,
+  ApiPublicImageSplatRoute: ApiPublicImageSplatRoute,
   ApiPublicTeamPhotoMemberIdRoute: ApiPublicTeamPhotoMemberIdRoute,
 }
 export const routeTree = rootRouteImport
