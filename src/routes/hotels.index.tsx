@@ -2,7 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { HotelCard } from "@/components/site/hotel-card";
 import { HotelSearchBar } from "@/components/site/search-bar";
-import { hotels, formatNPR, startingPrice, MIN_PRICE, MAX_PRICE } from "@/lib/hotels";
+import { formatNPR, startingPrice, MIN_PRICE, MAX_PRICE } from "@/lib/hotels";
+import { useHotels } from "@/lib/cms";
 import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
@@ -49,6 +50,7 @@ const ROOM_TYPES = ["Normal", "Deluxe", "Suite"] as const;
 
 function HotelsPage() {
   const search = Route.useSearch();
+  const { data: hotels = [] } = useHotels();
   const [price, setPrice] = useState<[number, number]>([MIN_PRICE, MAX_PRICE]);
   const [roomTypes, setRoomTypes] = useState<string[]>([]);
   const [stars, setStars] = useState<number[]>([]);
@@ -89,7 +91,7 @@ function HotelsPage() {
         break;
     }
     return list;
-  }, [search.destination, price, roomTypes, stars, minRating, selectedAmenities, sort]);
+  }, [hotels, search.destination, price, roomTypes, stars, minRating, selectedAmenities, sort]);
 
   return (
     <>

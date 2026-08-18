@@ -3,7 +3,8 @@ import { ShieldCheck, Sparkles, HandCoins, Headphones, Award, ArrowRight, Star, 
 import { HotelSearchBar } from "@/components/site/search-bar";
 import { HotelCard } from "@/components/site/hotel-card";
 import { Button } from "@/components/ui/button";
-import { hotels, destinations, offers } from "@/lib/hotels";
+import { offers } from "@/lib/hotels";
+import { useHotels, useDestinations } from "@/lib/cms";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -25,6 +26,8 @@ export const Route = createFileRoute("/")({
 });
 
 function Home() {
+  const { data: hotels = [] } = useHotels();
+  const { data: destinations = [] } = useDestinations();
   const featured = hotels.filter((h) => h.featured);
   const recommended = hotels.slice(0, 3);
 
@@ -84,7 +87,7 @@ function Home() {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {destinations.map((d) => (
             <Link
-              key={d.name}
+              key={d.id}
               to="/hotels"
               search={{ destination: d.name } as never}
               className="group relative aspect-[4/5] overflow-hidden rounded-2xl"

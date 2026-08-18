@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { destinations } from "@/lib/hotels";
+import { useDestinations } from "@/lib/cms";
 
 export const Route = createFileRoute("/destinations")({
   head: () => ({
@@ -14,6 +14,7 @@ export const Route = createFileRoute("/destinations")({
 });
 
 function Destinations() {
+  const { data: destinations = [], isLoading } = useDestinations();
   return (
     <div className="container-page py-16">
       <p className="text-xs uppercase tracking-widest text-gold">Where to next</p>
@@ -25,7 +26,7 @@ function Destinations() {
       <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {destinations.map((d) => (
           <Link
-            key={d.name}
+            key={d.id}
             to="/hotels"
             search={{ destination: d.name } as never}
             className="group relative aspect-[4/5] overflow-hidden rounded-2xl"
@@ -44,6 +45,13 @@ function Destinations() {
           </Link>
         ))}
       </div>
+
+      {!isLoading && destinations.length === 0 && (
+        <div className="mt-12 rounded-2xl border border-dashed border-border p-12 text-center">
+          <p className="font-display text-xl text-navy">No destinations published yet</p>
+          <p className="mt-2 text-sm text-muted-foreground">Please check back soon.</p>
+        </div>
+      )}
     </div>
   );
 }
