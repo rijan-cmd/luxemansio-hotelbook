@@ -92,10 +92,7 @@ function AdminDashboard() {
     );
   }
 
-        </div>
-      </div>
-    );
-  }
+
 
   return (
     <div className="container-page py-12">
