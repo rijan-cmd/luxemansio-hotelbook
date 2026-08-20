@@ -56,14 +56,6 @@ function AdminDashboard() {
     })();
   }, []);
 
-  const claimAdmin = async () => {
-    const { data, error } = await supabase.rpc("claim_first_admin");
-    if (error) return toast.error(error.message);
-    if (!data) return toast.error("An administrator already exists for this site.");
-    toast.success("Admin access granted");
-    setIsAdmin(true);
-  };
-
   const signOut = async () => {
     await supabase.auth.signOut();
     navigate({ to: "/admin/login", replace: true });
@@ -84,13 +76,10 @@ function AdminDashboard() {
           <ShieldCheck className="mx-auto h-8 w-8 text-gold" />
           <h1 className="mt-4 font-display text-2xl text-navy">Admin access required</h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            This account does not have administrator permissions. If you are setting up
-            Luxemansio for the first time, you can claim admin access below.
+            This account does not have administrator permissions. Contact a Luxemansio
+            administrator if you believe this is a mistake.
           </p>
           <div className="mt-6 flex flex-col gap-2">
-            <Button onClick={claimAdmin} className="bg-navy text-navy-foreground hover:bg-navy/90">
-              Claim admin access (first-time setup)
-            </Button>
             <Button variant="ghost" onClick={signOut} className="gap-2">
               <LogOut className="h-4 w-4" /> Sign out
             </Button>
@@ -98,6 +87,11 @@ function AdminDashboard() {
               Back to Luxemansio
             </Link>
           </div>
+        </div>
+      </div>
+    );
+  }
+
         </div>
       </div>
     );
