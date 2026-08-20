@@ -14,29 +14,127 @@ export type Database = {
   }
   public: {
     Tables: {
+      bookings: {
+        Row: {
+          check_in: string
+          check_out: string
+          created_at: string
+          guest_email: string
+          guest_name: string
+          guest_phone: string
+          guests: number
+          hotel_id: string | null
+          hotel_location: string
+          hotel_name: string
+          id: string
+          nights: number
+          notes: string
+          reference: string
+          room_name: string
+          rooms: number
+          status: string
+          total: number
+          updated_at: string
+        }
+        Insert: {
+          check_in: string
+          check_out: string
+          created_at?: string
+          guest_email?: string
+          guest_name?: string
+          guest_phone?: string
+          guests?: number
+          hotel_id?: string | null
+          hotel_location?: string
+          hotel_name?: string
+          id?: string
+          nights?: number
+          notes?: string
+          reference: string
+          room_name?: string
+          rooms?: number
+          status?: string
+          total?: number
+          updated_at?: string
+        }
+        Update: {
+          check_in?: string
+          check_out?: string
+          created_at?: string
+          guest_email?: string
+          guest_name?: string
+          guest_phone?: string
+          guests?: number
+          hotel_id?: string | null
+          hotel_location?: string
+          hotel_name?: string
+          id?: string
+          nights?: number
+          notes?: string
+          reference?: string
+          room_name?: string
+          rooms?: number
+          status?: string
+          total?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookings_hotel_id_fkey"
+            columns: ["hotel_id"]
+            isOneToOne: false
+            referencedRelation: "hotels"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       contact_info: {
         Row: {
           address: string
+          description: string
           email: string
+          hours: string
           id: string
+          image: string | null
+          intro: string
           map_embed_url: string
+          office: string
+          page_title: string
           phone: string
+          show_map: boolean
+          socials: Json
           updated_at: string
         }
         Insert: {
           address?: string
+          description?: string
           email?: string
+          hours?: string
           id?: string
+          image?: string | null
+          intro?: string
           map_embed_url?: string
+          office?: string
+          page_title?: string
           phone?: string
+          show_map?: boolean
+          socials?: Json
           updated_at?: string
         }
         Update: {
           address?: string
+          description?: string
           email?: string
+          hours?: string
           id?: string
+          image?: string | null
+          intro?: string
           map_embed_url?: string
+          office?: string
+          page_title?: string
           phone?: string
+          show_map?: boolean
+          socials?: Json
           updated_at?: string
         }
         Relationships: []
@@ -72,6 +170,36 @@ export type Database = {
           image?: string | null
           name?: string
           published?: boolean
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      faqs: {
+        Row: {
+          answer: string
+          created_at: string
+          id: string
+          published: boolean
+          question: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          answer?: string
+          created_at?: string
+          id?: string
+          published?: boolean
+          question: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          answer?: string
+          created_at?: string
+          id?: string
+          published?: boolean
+          question?: string
           sort_order?: number
           updated_at?: string
         }
@@ -170,12 +298,168 @@ export type Database = {
         }
         Relationships: []
       }
+      offers: {
+        Row: {
+          active: boolean
+          created_at: string
+          description: string
+          discount: string
+          ends_on: string | null
+          id: string
+          image: string | null
+          price_from: number | null
+          sort_order: number
+          starts_on: string | null
+          tag: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          description?: string
+          discount?: string
+          ends_on?: string | null
+          id?: string
+          image?: string | null
+          price_from?: number | null
+          sort_order?: number
+          starts_on?: string | null
+          tag?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          description?: string
+          discount?: string
+          ends_on?: string | null
+          id?: string
+          image?: string | null
+          price_from?: number | null
+          sort_order?: number
+          starts_on?: string | null
+          tag?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      policies: {
+        Row: {
+          body: string
+          id: string
+          published: boolean
+          sort_order: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          body?: string
+          id: string
+          published?: boolean
+          sort_order?: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          body?: string
+          id?: string
+          published?: boolean
+          sort_order?: number
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      rooms: {
+        Row: {
+          bed: string
+          category: string
+          created_at: string
+          description: string
+          facilities: string[]
+          hotel_id: string
+          id: string
+          image: string | null
+          max_guests: number
+          name: string
+          price: number
+          published: boolean
+          size: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          bed?: string
+          category?: string
+          created_at?: string
+          description?: string
+          facilities?: string[]
+          hotel_id: string
+          id?: string
+          image?: string | null
+          max_guests?: number
+          name?: string
+          price?: number
+          published?: boolean
+          size?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          bed?: string
+          category?: string
+          created_at?: string
+          description?: string
+          facilities?: string[]
+          hotel_id?: string
+          id?: string
+          image?: string | null
+          max_guests?: number
+          name?: string
+          price?: number
+          published?: boolean
+          size?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rooms_hotel_id_fkey"
+            columns: ["hotel_id"]
+            isOneToOne: false
+            referencedRelation: "hotels"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      site_content: {
+        Row: {
+          data: Json
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          data?: Json
+          id: string
+          updated_at?: string
+        }
+        Update: {
+          data?: Json
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       team_members: {
         Row: {
           description: string
           id: string
           name: string
           photo_url: string | null
+          published: boolean
           sort_order: number
           storage_path: string | null
           title: string
@@ -186,6 +470,7 @@ export type Database = {
           id: string
           name: string
           photo_url?: string | null
+          published?: boolean
           sort_order?: number
           storage_path?: string | null
           title?: string
@@ -196,6 +481,7 @@ export type Database = {
           id?: string
           name?: string
           photo_url?: string | null
+          published?: boolean
           sort_order?: number
           storage_path?: string | null
           title?: string
@@ -229,7 +515,6 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      claim_first_admin: { Args: never; Returns: boolean }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
