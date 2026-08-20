@@ -80,13 +80,29 @@ export interface ContactInfoRow {
 const PLACEHOLDER = "/placeholder.svg";
 const clamp = (n: number) => Math.min(MAX_PRICE, Math.max(MIN_PRICE, Number(n) || MIN_PRICE));
 
+export interface RoomRow {
+  id: string;
+  hotel_id: string;
+  category: string;
+  name: string;
+  bed: string;
+  max_guests: number;
+  size: string;
+  description: string;
+  facilities: string[];
+  price: number;
+  image: string | null;
+  sort_order: number;
+  published: boolean;
+}
+
 /** Maps a database row onto the Hotel shape the existing public UI expects. */
-export function rowToHotel(r: HotelRow): Hotel {
+export function rowToHotel(r: HotelRow, roomRows?: RoomRow[]): Hotel {
   const main = imageUrl(r.main_image) ?? PLACEHOLDER;
   const gallery = (r.gallery ?? []).map((g) => imageUrl(g) ?? PLACEHOLDER);
   const view = r.view_label || "City View";
 
-  const rooms: Room[] = [
+  const fallback: Room[] = [
     {
       id: "normal",
       category: "Normal",
@@ -122,6 +138,24 @@ export function rowToHotel(r: HotelRow): Hotel {
     },
   ];
 
+  const fromDb: Room[] = (roomRows ?? [])
+    .slice()
+    .sort((a, b) => a.sort_order - b.sort_order)
+    .map((rm, i) => ({
+      id: rm.id,
+      category: (["Normal", "Deluxe", "Suite"].includes(rm.category) ? rm.category : "Normal") as Room["category"],
+      name: rm.name || `${rm.category} Room`,
+      bed: rm.bed,
+      maxGuests: rm.max_guests,
+      size: rm.size,
+      facilities: rm.facilities ?? [],
+      pricePerNight: clamp(rm.price),
+      image: imageUrl(rm.image) ?? gallery[i] ?? main,
+    }));
+
+  const rooms = fromDb.length ? fromDb : fallback;
+  const byCat = (c: string) => rooms.find((rm) => rm.category === c)?.image ?? main;
+
   return {
     id: r.id,
     name: r.name,
@@ -132,7 +166,7 @@ export function rowToHotel(r: HotelRow): Hotel {
     stars: r.stars,
     rating: Number(r.rating),
     reviews: r.reviews,
-    price: rooms[0].pricePerNight,
+    price: Math.min(...rooms.map((rm) => rm.pricePerNight)),
     shortDescription: r.short_description,
     description: r.description,
     amenities: r.amenities ?? [],
@@ -150,7 +184,7 @@ export function rowToHotel(r: HotelRow): Hotel {
     images: {
       main,
       gallery: gallery.length ? gallery : [main],
-      rooms: { normal: rooms[0].image, deluxe: rooms[1].image, suite: rooms[2].image },
+      rooms: { normal: byCat("Normal"), deluxe: byCat("Deluxe"), suite: byCat("Suite") },
     },
     image: main,
     gallery: gallery.length ? gallery : [main],
@@ -174,13 +208,15 @@ export interface PublicDestination {
 /* ── public reads ──────────────────────────────────────────── */
 
 async function fetchHotels(): Promise<Hotel[]> {
-  const { data, error } = await supabase
-    .from("hotels")
-    .select("*")
-    .eq("published", true)
-    .order("created_at", { ascending: false });
+  const [{ data, error }, roomsRes] = await Promise.all([
+    supabase.from("hotels").select("*").eq("published", true).order("created_at", { ascending: false }),
+    supabase.from("rooms").select("*").eq("published", true),
+  ]);
   if (error) throw error;
-  return (data as unknown as HotelRow[]).map(rowToHotel);
+  const rooms = (roomsRes.data ?? []) as unknown as RoomRow[];
+  return (data as unknown as HotelRow[]).map((h) =>
+    rowToHotel(h, rooms.filter((rm) => rm.hotel_id === h.id)),
+  );
 }
 
 export function useHotels() {
@@ -191,12 +227,18 @@ export function useHotel(id: string) {
   return useQuery({
     queryKey: ["hotel", id],
     queryFn: async () => {
-      const { data, error } = await supabase.from("hotels").select("*").eq("id", id).maybeSingle();
+      const [{ data, error }, roomsRes] = await Promise.all([
+        supabase.from("hotels").select("*").eq("id", id).maybeSingle(),
+        supabase.from("rooms").select("*").eq("hotel_id", id).eq("published", true),
+      ]);
       if (error) throw error;
-      return data ? rowToHotel(data as unknown as HotelRow) : null;
+      return data
+        ? rowToHotel(data as unknown as HotelRow, (roomsRes.data ?? []) as unknown as RoomRow[])
+        : null;
     },
   });
 }
+
 
 export function useDestinations() {
   return useQuery({
